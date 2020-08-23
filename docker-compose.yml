@@ -1,0 +1,40 @@
+version: '2'
+services:
+
+  drupal:
+    user: "${DAO_DRUPAL}"
+    image:  siva01/drupal-8_php7.3
+    networks: [ "drupal", "mysql"]
+    environment:
+      DAO_MYSQL_ROOT_PASSWORD: "${DAO_MYSQL_ROOT_PASSWORD}"
+      DAO_PHP_INI_XDEBUG_CONNECT_BACK: "${DAO_PHP_INI_XDEBUG_CONNECT_BACK}"
+      DAO_PHP_INI_XDEBUG_REMOTE_HOST: "${DAO_PHP_INI_XDEBUG_REMOTE_HOST}"
+      TERM: xterm # Needed for mc.
+    volumes:
+      - "${DAO_PROJECT_DIR}:/var/www/html:delegated"
+
+  adminer:
+    image: adminer
+    restart: always
+    networks: [ "mysql" ]
+    ports: [ "${DAO_PORT_ADMINER}:8080" ]
+
+  nginx:
+    user: "${DAO_DRUPAL}"
+    image: siva01/drupal-nginx
+    networks: [ "drupal" ]
+    ports: [ "${DAO_PORT_NGINX}:8080" ]
+    volumes_from:
+      - drupal
+
+  mysql:
+    image:  mysql:5.7.31
+    networks: [ "mysql" ]
+    ports: [ "${DAO_PORT_MYSQL}:3306" ]
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DAO_MYSQL_ROOT_PASSWORD}"
+    volumes: [ "/var/lib/mysql" ]
+
+networks:
+  drupal: { driver: "bridge" }
+  mysql: { driver: "bridge" }
