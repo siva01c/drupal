@@ -3,7 +3,7 @@ services:
 
   drupal:
     user: "${DAO_DRUPAL}"
-    image:  siva01/drupal-8_php7.3
+    image:  siva01/drupal_php7.3
     networks: [ "drupal", "mysql"]
     environment:
       DAO_MYSQL_ROOT_PASSWORD: "${DAO_MYSQL_ROOT_PASSWORD}"
