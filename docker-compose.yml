@@ -3,7 +3,7 @@ services:
 
   drupal:
     user: "${DAO_DRUPAL}"
-    image:  siva01/drupal_php7.3
+    image:  siva01/drupal_php:7.4
     env_file:
       - .env
     volumes:  [ "${DAO_PROJECT_DIR}:/var/www/html:delegated" ]
