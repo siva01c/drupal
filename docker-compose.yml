@@ -1,25 +1,22 @@
-version: '3'
 services:
 
   drupal:
-    user: "${DAO_DRUPAL}"
-    image:  siva01/drupal_php:7.4
+    image: drupal-php
+    build:
+      context: ./docker/php/
     env_file:
       - .env
-    volumes:  [ "${DAO_PROJECT_DIR}:/var/www/html:delegated" ]
-
-  adminer:
-    image: adminer:latest
-    ports: [ "${DAO_PORT_ADMINER}:8080" ]
+    volumes: [ "${DAO_PROJECT_DIR}:/var/www/html:delegated" ]
 
   nginx:
-    user: "${DAO_DRUPAL}"
-    image: siva01/drupal-nginx
+    image: drupal-nginx
+    build:
+      context: ./docker/nginx
     ports: [ "${DAO_PORT_NGINX}:8080" ]
-    volumes:  [ "${DAO_PROJECT_DIR}:/var/www/html:delegated" ]
+    volumes: [ "${DAO_PROJECT_DIR}:/var/www/html/:delegated" ]
 
   mysql:
-    image:  mysql:5.7.31
+    image: mysql:8.0
     ports: [ "${DAO_PORT_MYSQL}:3306" ]
     environment:
       MYSQL_ROOT_PASSWORD: "${DAO_MYSQL_ROOT_PASSWORD}"
