@@ -8,9 +8,26 @@
 /web/profiles/contrib
 /web/themes/contrib
 /web/sites/default/files
+/web/update.php
+/web/sites/README.txt
+/web/sites/default/default.services.yml
+/web/sites/default/default.settings.php
+/web/sites/development.services.yml
+/web/sites/example.settings.local.php
+/web/sites/example.sites.php
+/web/index.php
+
+/web/.csslintrc
+/web/.eslintignore
+/web/.eslintrc.json
+/web/.ht.router.php
+/web/.htaccess
+
+/web/sites/*/files
+/web/sites/*/private
 
 # Ignore Composer-managed dependencies.
-vendor/
+/vendor/
 /nbproject/private/
 /.editorconfig
 /.gitattributes
@@ -18,3 +35,6 @@ vendor/
 .directory
 .editorconfig
 .env
+.history/
+.gitattributes
+k8s/
