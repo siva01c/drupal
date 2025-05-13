@@ -3,10 +3,14 @@ services:
   drupal:
     image: drupal-php
     build:
-      context: ./docker/php/
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        - TARGET_ENV=${TARGET_ENV}
     env_file:
       - .env
-    volumes: [ "${DAO_PROJECT_DIR}:/var/www/html:delegated" ]
+    volumes: 
+      - "${DAO_PROJECT_DIR}:/var/www/html:delegated"
 
   nginx:
     image: drupal-nginx
