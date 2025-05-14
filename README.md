@@ -1,7 +1,5 @@
 # Drupal 11 & PHP 8.3 & MySQL 8.0
 
-Drupal 11 installation pack
-
 ```
 git clone git@github.com:siva01c/drupal.git drupal 
 cd drupal 
