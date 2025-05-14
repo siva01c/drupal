@@ -25,6 +25,9 @@
 
 /web/sites/*/files
 /web/sites/*/private
+/web/sites/*/settings.php
+/web/sites/*/services.yml
+/web/sites/*/settings.local.php
 
 # Ignore Composer-managed dependencies.
 /vendor/
@@ -38,3 +41,4 @@
 .history/
 .gitattributes
 k8s/
+tmp/
