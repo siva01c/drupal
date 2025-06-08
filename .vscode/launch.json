@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen for Xdebug (Docker)",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/var/www/html": "${workspaceFolder}"
+            },
+            "hostname": "0.0.0.0",
+            "xdebugSettings": {
+                "max_children": 128,
+                "max_data": 512,
+                "max_depth": 3
+            },
+            "log": true
+        }
+    ]
+}

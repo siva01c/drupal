@@ -11,6 +11,7 @@ services:
       - .env
     volumes: 
       - "${DAO_PROJECT_DIR}:/var/www/html:delegated"
+      - "${DAO_PROJECT_DIR}/tmp:/var/www/tmp/xdebug-output:delegated"
 
   nginx:
     image: drupal-nginx
@@ -20,7 +21,7 @@ services:
     volumes: [ "${DAO_PROJECT_DIR}:/var/www/html/:delegated" ]
 
   mysql:
-    image: mysql:8.0
+    image: mysql:8.4
     ports: [ "${DAO_PORT_MYSQL}:3306" ]
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
