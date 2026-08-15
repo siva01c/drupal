@@ -1,4 +1,4 @@
-# Drupal 11 & PHP 8.3 & MySQL 8.4
+# Drupal 11 & PHP 8.4 & MySQL 8.4
 
 ```
 git clone git@github.com:siva01c/drupal.git drupal 

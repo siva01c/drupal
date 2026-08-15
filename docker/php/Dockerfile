@@ -1,5 +1,5 @@
 # Use multi-stage build for better layer caching and smaller final image
-FROM php:8.3-fpm-bullseye AS base
+FROM php:8.4-fpm-bookworm AS base
 
 # Build arguments
 ARG TARGET_ENV=dev
@@ -8,7 +8,7 @@ ARG TARGET_ENV=dev
 ENV COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/tmp/composer \
     COMPOSER_CACHE_DIR=/tmp/composer-cache \
-    DRUPAL_VERSION=11.1 \
+    DRUPAL_VERSION=11.4 \
     PATH=${PATH}:/var/www/html/bin
 
 USER root    
@@ -55,7 +55,7 @@ RUN set -eux && \
         bcmath \
         intl && \
     # Install PECL extensions with fallback versions
-    (pecl install apcu || pecl install apcu-5.1.23 || pecl install apcu-5.1.22) && \
+    (pecl install apcu || pecl install apcu-5.1.28 || pecl install apcu-5.1.27) && \
     docker-php-ext-enable apcu && \
     # Clean up in same layer
     apt-get clean && \
