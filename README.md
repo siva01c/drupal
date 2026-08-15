@@ -4,8 +4,8 @@
 git clone git@github.com:siva01c/drupal.git drupal 
 cd drupal 
 cp .env.default .env   # Copy file .env.default to .env 
-docker-compose up -d 
-docker-compose exec drupal bash
+docker compose up -d 
+docker compose exec drupal bash
 composer install
 ```
 
