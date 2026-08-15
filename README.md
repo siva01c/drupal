@@ -6,7 +6,7 @@ cd drupal
 cp .env.default .env   # Copy file .env.default to .env 
 docker compose up -d 
 docker compose exec drupal bash
-composer install
+docker compose exec drupal composer install
 ```
 
 Open url in your browser: http://localhost:1577 - port is defined in .env file as DAO_PORT_NGINX
