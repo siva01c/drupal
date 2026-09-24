@@ -1,0 +1,11 @@
+administer startupfactory chat:
+  title: 'Administer Startup Factory Chat'
+  description: 'Configure chat integration settings and ragchat connection.'
+
+access chat api:
+  title: 'Access Chat API'
+  description: 'Send messages to the chat API.'
+
+use chat widget:
+  title: 'Use Chat Widget'
+  description: 'Access the chat widget on project pages.'

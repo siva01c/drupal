@@ -1,0 +1,11 @@
+uuid: 6864b236-3be0-4e52-bd38-319866d97b98
+langcode: en
+status: true
+dependencies: {  }
+id: startupfactory_local
+domain_id: 249689
+hostname: startupfactory.local
+name: 'Startup Factory (default)'
+scheme: variable
+weight: 1
+is_default: true

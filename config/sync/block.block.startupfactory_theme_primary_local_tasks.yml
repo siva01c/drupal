@@ -1,0 +1,22 @@
+uuid: ef0f262d-17a1-47b3-8cb3-4f07c9982cc3
+langcode: en
+status: true
+dependencies:
+  theme:
+    - startupfactory_theme
+_core:
+  default_config_hash: nGE3EoPQQaQCuqTUtZgw0-KIzmrqdKDzdNQf2JyPUt4
+id: startupfactory_theme_primary_local_tasks
+theme: startupfactory_theme
+region: highlighted
+weight: -4
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Primary tabs'
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: false
+visibility: {  }

@@ -1,0 +1,4 @@
+name: 'Czech Koruna'
+symbol: Kč
+currency_code: CZK
+fraction_digits: 2

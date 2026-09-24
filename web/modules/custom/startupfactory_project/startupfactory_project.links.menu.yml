@@ -1,0 +1,40 @@
+entity.project.collection:
+  title: 'Projects'
+  route_name: entity.project.collection
+  description: 'List of projects.'
+  parent: system.admin_content
+  weight: 10
+
+entity.project.add_form:
+  title: 'Add Project'
+  route_name: entity.project.add_form
+  description: 'Create a new project.'
+  parent: entity.project.collection
+  weight: 20
+
+startupfactory_project.dashboard:
+  title: 'My Dashboard'
+  route_name: startupfactory_project.dashboard
+  description: 'View your projects dashboard.'
+  parent: user.page
+  weight: 10
+
+startupfactory_project.catalog:
+  title: 'Project Catalog'
+  route_name: startupfactory_project.catalog
+  description: 'Browse public projects.'
+  weight: -10
+
+startupfactory_project.export:
+  title: 'Export Project'
+  route_name: startupfactory_project.export_form
+  description: 'Export a project to Git repository.'
+  parent: entity.project.collection
+  weight: 30
+
+startupfactory_project.deploy:
+  title: 'Deploy Project'
+  route_name: startupfactory_project.deploy_form
+  description: 'Deploy a project to VPS via ops-proxy.'
+  parent: entity.project.collection
+  weight: 40

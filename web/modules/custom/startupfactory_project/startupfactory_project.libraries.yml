@@ -1,0 +1,13 @@
+slug_generation:
+  version: 1.x
+  js:
+    js/slug-generation.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+
+dashboard:
+  version: 1.x
+  css:
+    theme:
+      css/dashboard.css: {}

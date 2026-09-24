@@ -1,0 +1,133 @@
+/**
+ * Startup Factory — Main Styles
+ *
+ * Built on top of Olivero base theme.
+ * Extends with brand variables from colors.css.
+ */
+
+/* ---------- Base overrides ---------- */
+
+body {
+  font-family: var(--sf-font-body);
+  color: var(--sf-color-text);
+  background: var(--sf-color-bg);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--sf-font-heading);
+  color: var(--sf-color-text);
+  line-height: 1.25;
+}
+
+a {
+  color: var(--sf-color-primary);
+  transition: color var(--sf-transition);
+}
+
+a:hover {
+  color: var(--sf-color-primary-light);
+}
+
+code, pre, .font-mono {
+  font-family: var(--sf-font-mono);
+}
+
+/* ---------- Buttons / CTA ---------- */
+
+.button,
+button,
+input[type="submit"],
+.button--primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sf-space-sm);
+  padding: 0.65em 1.4em;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: var(--sf-radius-md);
+  cursor: pointer;
+  transition: background var(--sf-transition), box-shadow var(--sf-transition);
+}
+
+.button--primary,
+button,
+input[type="submit"] {
+  background: var(--sf-color-accent);
+  color: #fff;
+}
+
+.button--primary:hover,
+button:hover,
+input[type="submit"]:hover {
+  background: var(--sf-color-accent-dark);
+  box-shadow: var(--sf-shadow-md);
+}
+
+.button--outline {
+  background: transparent;
+  color: var(--sf-color-primary);
+  border: 2px solid var(--sf-color-primary);
+}
+
+.button--outline:hover {
+  background: var(--sf-color-primary);
+  color: #fff;
+}
+
+/* ---------- Cards (product, MVP catalog) ---------- */
+
+.card {
+  background: var(--sf-color-surface);
+  border: 1px solid var(--sf-color-border);
+  border-radius: var(--sf-radius-lg);
+  padding: var(--sf-space-lg);
+  transition: box-shadow var(--sf-transition), transform var(--sf-transition);
+}
+
+.card:hover {
+  box-shadow: var(--sf-shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* ---------- Hero section ---------- */
+
+.region-hero {
+  background: linear-gradient(135deg, var(--sf-color-primary-dark), var(--sf-color-primary));
+  color: #fff;
+  padding: var(--sf-space-3xl) var(--sf-space-xl);
+  text-align: center;
+}
+
+.region-hero h1 {
+  color: #fff;
+  font-size: 2.5rem;
+  margin-bottom: var(--sf-space-md);
+}
+
+.region-hero p {
+  font-size: 1.15rem;
+  opacity: 0.9;
+  max-width: 640px;
+  margin: 0 auto var(--sf-space-xl);
+}
+
+/* ---------- Footer ---------- */
+
+.region-footer-top,
+.region-footer-bottom {
+  background: var(--sf-color-bg-alt);
+  padding: var(--sf-space-xl);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+  .region-hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .region-hero {
+    padding: var(--sf-space-2xl) var(--sf-space-md);
+  }
+}

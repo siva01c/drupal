@@ -1,0 +1,120 @@
+<?php
+
+/**
+ * @file
+ * Contains project hooks and helper functions.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\domain\Entity\Domain;
+use Drupal\startupfactory_project\Entity\Project;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for project entities.
+ *
+ * On new project: auto-create Domain record and auto-generate slug from name.
+ */
+function startupfactory_project_project_insert(EntityInterface $entity) {
+  /** @var \Drupal\startupfactory_project\Entity\Project $entity */
+
+  // Auto-generate slug from name if empty.
+  if (empty($entity->get('slug')->value)) {
+    $slug = \Drupal::transliteration()
+      ->transliterate($entity->getName(), \Drupal::languageManager()->getDefaultLanguage()->getId())
+      ->result;
+    $slug = strtolower(preg_replace('/[^a-z0-9]+/', '-', trim($slug, '-')));
+    $entity->set('slug', $slug);
+    $entity->save();
+  }
+
+  // Skip domain creation if already assigned.
+  if ($entity->getDomain()) {
+    return;
+  }
+
+  // Read base domain from VIRTUAL_HOST env var, fallback to startupfactory.local.
+  $base_domain = getenv('VIRTUAL_HOST') ?: 'startupfactory.local';
+
+  // Create Domain record via config storage to bypass DomainStorage::create()
+  // side effects (loadDefaultId -> negotiateActiveDomain fails in CLI).
+  $hostname = $entity->getSlug() . '.' . $base_domain;
+  $domain_id = preg_replace('/[^a-z0-9_]/', '_', $hostname);
+
+  try {
+    $domain = Domain::create([
+      'id' => $domain_id,
+      'hostname' => $hostname,
+      'name' => $entity->getName(),
+      'scheme' => 'variable',
+      'status' => 1,
+      'is_default' => 0,
+    ]);
+    $domain->save();
+
+    // Link domain back to the project.
+    $entity->set('domain', $domain->id());
+    $entity->save();
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('startupfactory_project')->error('Failed to create domain for project @name: @message', [
+      '@name' => $entity->getName(),
+      '@message' => $e->getMessage(),
+    ]);
+  }
+
+  // Assign the owner as domain editor via field_domain_access if it exists.
+  $owner = $entity->getOwner();
+  $domain = $entity->getDomain();
+  if ($owner && $domain && $owner->hasField('field_domain_access') && !$owner->get('field_domain_access')->isEmpty()) {
+    $current_domains = $owner->get('field_domain_access')->getValue();
+    $domain_exists = FALSE;
+    foreach ($current_domains as $item) {
+      if ($item['target_id'] === $domain->id()) {
+        $domain_exists = TRUE;
+        break;
+      }
+    }
+    if (!$domain_exists) {
+      $current_domains[] = ['target_id' => $domain->id()];
+      $owner->set('field_domain_access', $current_domains);
+      $owner->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete() for project entities.
+ *
+ * On project delete: remove domain record.
+ */
+function startupfactory_project_project_predelete(EntityInterface $entity) {
+  /** @var \Drupal\startupfactory_project\Entity\Project $entity */
+  $domain = $entity->getDomain();
+  if ($domain) {
+    // Remove domain access from the owner if field exists.
+    $owner = $entity->getOwner();
+    if ($owner && $owner->hasField('field_domain_access') && !$owner->get('field_domain_access')->isEmpty()) {
+      $current_domains = $owner->get('field_domain_access')->getValue();
+      $updated_domains = [];
+      foreach ($current_domains as $item) {
+        if ($item['target_id'] !== $domain->id()) {
+          $updated_domains[] = $item;
+        }
+      }
+      $owner->set('field_domain_access', $updated_domains);
+      $owner->save();
+    }
+
+    // Delete the domain record.
+    $domain->delete();
+  }
+}
+
+/**
+ * Implements hook_form_alter() for the project entity form.
+ */
+function startupfactory_project_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'project_form' || $form_id === 'project_edit_form') {
+    $form['#attached']['library'][] = 'startupfactory_project/slug_generation';
+  }
+}

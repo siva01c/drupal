@@ -1,0 +1,9 @@
+_core:
+  default_config_hash: e8JpZ8FI0zJuzZXWKh3Q2RDKPwpGcyFqpXe9vC3LnC8
+ragchat_base_url: 'http://host.docker.internal:8080'
+ragchat_api_token: ''
+jwt_secret: change-me-jwt-secret
+default_theme: light
+default_greeting: 'Hi! I can help you configure your project. What would you like to do?'
+default_placeholder: 'Ask me anything...'
+default_height: 400px

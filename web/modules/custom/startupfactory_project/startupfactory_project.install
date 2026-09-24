@@ -1,0 +1,154 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Startup Factory Project module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function startupfactory_project_schema() {
+  $schema['project'] = [
+    'description' => 'Stores Startup Factory Project entities.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'vid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'uuid' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'bundle' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'langcode' => [
+        'type' => 'varchar',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+      ],
+      'slug' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+        'default' => '',
+      ],
+      'type' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+        'default' => 'web',
+      ],
+      'visibility' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 1,
+      ],
+      'domain' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+        'default' => '',
+      ],
+      'git_repo_url__uri' => [
+        'type' => 'varchar',
+        'length' => 2048,
+        'not null' => FALSE,
+        'default' => '',
+      ],
+      'git_repo_url__title' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+      ],
+      'git_repo_url__options' => [
+        'type' => 'blob',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'serialize' => TRUE,
+      ],
+      'ragchat_shop_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'status' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 1,
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'changed' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'uuid' => ['uuid'],
+    ],
+    'indexes' => [
+      'bundle' => ['bundle'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Add ragchat_shop_id column to the project table.
+ */
+function startupfactory_project_update_8001(&$sandbox) {
+  $database = \Drupal::database();
+  if (!$database->schema()->fieldExists('project', 'ragchat_shop_id')) {
+    $database->schema()->addField('project', 'ragchat_shop_id', [
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'RagChat shop node ID for this project.',
+    ]);
+  }
+
+  // Register the field storage definition so the entity layer knows about it.
+  $etm = \Drupal::entityTypeManager();
+  $definition = $etm->getDefinition('project');
+  $entity_class = $definition->getClass();
+  $all_fields = $entity_class::baseFieldDefinitions($definition);
+  $field = $all_fields['ragchat_shop_id'];
+  $manager = \Drupal::entityDefinitionUpdateManager();
+  $manager->installFieldStorageDefinition('ragchat_shop_id', 'project', 'startupfactory_project', $field);
+
+  \Drupal::entityTypeManager()->clearCachedDefinitions();
+}

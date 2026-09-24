@@ -1,0 +1,11 @@
+uuid: 2f0a6a19-21f1-44a0-a5c8-db94cae20bd5
+langcode: en
+status: true
+dependencies: {  }
+name: 'Landing Page'
+type: landing_page
+description: 'No-code landing page with paragraph-based layout'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

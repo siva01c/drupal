@@ -1,0 +1,34 @@
+startupfactory_chat.api_chat:
+  path: '/api/chat'
+  defaults:
+    _controller: '\Drupal\startupfactory_chat\Controller\ChatApiController::chat'
+    _title: 'Chat API'
+  requirements:
+    _permission: 'access content'
+  methods: [POST]
+
+startupfactory_chat.api_status:
+  path: '/api/chat/status'
+  defaults:
+    _controller: '\Drupal\startupfactory_chat\Controller\ChatApiController::status'
+    _title: 'Chat Status'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+
+startupfactory_chat.widget_script:
+  path: '/embed/startupfactory-chat.js'
+  defaults:
+    _controller: '\Drupal\startupfactory_chat\Controller\ChatWidgetController::serveWidget'
+    _title: 'Chat Widget Script'
+  requirements:
+    _access: 'TRUE'
+  methods: [GET]
+
+startupfactory_chat.admin_config:
+  path: '/admin/config/startupfactory/chat'
+  defaults:
+    _title: 'Chat Integration Settings'
+    _form: 'Drupal\startupfactory_chat\Form\ChatConfigForm'
+  requirements:
+    _permission: 'administer startupfactory chat'

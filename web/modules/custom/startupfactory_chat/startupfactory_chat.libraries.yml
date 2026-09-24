@@ -1,0 +1,11 @@
+chat_widget:
+  version: 1.x
+  css:
+    component:
+      css/chat-widget.css: {}
+  js:
+    js/chat-widget.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once

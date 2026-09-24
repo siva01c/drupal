@@ -1,0 +1,15 @@
+uuid: f53c7393-95f1-4c62-bd0e-f0c86dd05bb1
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.startupfactory_local
+  module:
+    - domain_access
+id: domain_access_add_action_startupfactory_local
+label: 'Add selected content to the Startup Factory (default) domain'
+type: node
+plugin: domain_access_add_action
+configuration:
+  domain_id:
+    - startupfactory_local

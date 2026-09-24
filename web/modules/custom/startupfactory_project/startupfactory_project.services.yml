@@ -1,0 +1,7 @@
+services:
+  startupfactory_project.export:
+    class: Drupal\startupfactory_project\Service\ExportService
+    arguments: ['@entity_type.manager', '@module_handler', '@logger.factory', '@settings']
+  startupfactory_project.deploy:
+    class: Drupal\startupfactory_project\Service\DeployService
+    arguments: ['@entity_type.manager', '@module_handler', '@logger.factory', '@settings']

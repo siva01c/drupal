@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Chat integration hooks.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\startupfactory_project\Entity\Project;
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * Auto-provisions a ragchat shop node via MCP when a new project is created.
+ */
+function startupfactory_chat_entity_insert(EntityInterface $entity) {
+  if (!$entity instanceof Project) {
+    return;
+  }
+
+  // Skip if shop already assigned.
+  if ($entity->getRagchatShopId()) {
+    return;
+  }
+
+  // Skip if chat module is not configured.
+  $config = \Drupal::config('startupfactory_chat.settings');
+  if (empty($config->get('ragchat_base_url'))) {
+    return;
+  }
+
+  $base_domain = getenv('VIRTUAL_HOST') ?: 'startupfactory.local';
+  $domain = $entity->getSlug() . '.' . $base_domain;
+
+  try {
+    /** @var \Drupal\startupfactory_chat\Service\ChatIntegrationService $chat */
+    $chat = \Drupal::service('startupfactory_chat.integration');
+    $shop_id = $chat->createShopForProject(
+      $entity->id(),
+      $entity->getName(),
+      $domain
+    );
+
+    if ($shop_id) {
+      // Use direct DB update to avoid re-triggering insert hooks.
+      \Drupal::database()->update('project')
+        ->fields(['ragchat_shop_id' => $shop_id])
+        ->condition('id', $entity->id())
+        ->execute();
+    }
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('startupfactory_chat')->error(
+      'Failed to auto-provision ragchat shop for project @name: @message',
+      [
+        '@name' => $entity->getName(),
+        '@message' => $e->getMessage(),
+      ]
+    );
+  }
+}

@@ -871,3 +871,10 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
+
+// Docker environment settings (DB, Redis, Trusted Host, ops-proxy).
+// This file reads credentials from Docker Compose environment variables.
+if (file_exists($app_root . '/' . $site_path . '/settings.docker.php')) {
+  include $app_root . '/' . $site_path . '/settings.docker.php';
+}
+

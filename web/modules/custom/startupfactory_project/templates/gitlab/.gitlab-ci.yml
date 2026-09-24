@@ -1,0 +1,49 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$VPS_SSH_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - ssh-keyscan -H $VPS_HOST >> ~/.ssh/known_hosts
+  script:
+    # Sync files to VPS
+    - rsync -avz --delete
+        --exclude '.git'
+        --exclude '.env'
+        --exclude 'vendor'
+        --exclude 'web/sites/default/files'
+        ./ $VPS_USER@$VPS_HOST:$VPS_PATH/
+
+    # Run deployment commands
+    - ssh $VPS_USER@$VPS_HOST << 'EOF'
+        cd $VPS_PATH
+        
+        # Pull latest changes
+        git pull origin main
+        
+        # Update dependencies
+        docker compose exec drupal composer install --no-dev --optimize-autoloader
+        
+        # Import configuration
+        docker compose exec drush config:import -y
+        
+        # Run database updates
+        docker compose exec drush updb -y
+        
+        # Clear cache
+        docker compose exec drush cr
+        
+        # Restart services
+        docker compose up -d
+      EOF
+  only:
+    - main
+  when: manual
+  environment:
+    name: production
+    url: https://$VIRTUAL_HOST

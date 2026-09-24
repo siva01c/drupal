@@ -1,0 +1,15 @@
+uuid: 7b0789a0-73eb-47d4-9fec-5e39a293e3da
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.startupfactory_local
+  module:
+    - domain_access
+id: domain_access_remove_action_startupfactory_local
+label: 'Remove selected content from the Startup Factory (default) domain'
+type: node
+plugin: domain_access_remove_action
+configuration:
+  domain_id:
+    - startupfactory_local

@@ -1,0 +1,12 @@
+name: 'Startup Factory Project'
+type: module
+description: 'Custom Project entity with Domain-based multi-tenancy for Startup Factory.'
+core_version_requirement: ^11
+package: 'Startup Factory'
+dependencies:
+  - drupal:domain
+  - drupal:domain_access
+  - drupal:node
+  - drupal:user
+  - drupal:options
+  - drupal:inline_entity_form

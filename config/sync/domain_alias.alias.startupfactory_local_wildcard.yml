@@ -1,0 +1,9 @@
+uuid: d9e65bdc-a202-4245-b47e-23b0bd0e29ad
+langcode: en
+status: true
+dependencies: {  }
+id: startupfactory_local_wildcard
+domain_id: startupfactory_local
+pattern: '*'
+redirect: null
+environment: null

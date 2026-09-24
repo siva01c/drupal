@@ -1,0 +1,15 @@
+uuid: 1cb7a141-c828-4ee2-9f9f-ea76cd04ed33
+langcode: en
+status: true
+dependencies:
+  config:
+    - domain.record.startupfactory_local
+  module:
+    - domain_access
+id: domain_access_add_editor_action_startupfactory_local
+label: 'Add editors to the Startup Factory (default) domain'
+type: user
+plugin: domain_access_add_editor_action
+configuration:
+  domain_id:
+    - startupfactory_local

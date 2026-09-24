@@ -1,0 +1,10 @@
+uuid: 8502df2b-56a3-4ed9-bd93-d16c9935d69d
+langcode: en
+status: true
+dependencies: {  }
+id: cta_button
+label: 'CTA Button'
+icon_uuid: null
+icon_default: null
+description: null
+behavior_plugins: {  }

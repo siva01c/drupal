@@ -1,0 +1,61 @@
+/**
+ * @file
+ * Startup Factory Chat Widget Styles.
+ */
+
+.startupfactory-chat-container {
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.startupfactory-chat-container:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.startupfactory-chat-toggle {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.startupfactory-chat-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+}
+
+/* Chat status indicator */
+.startupfactory-chat-status {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid white;
+}
+
+.startupfactory-chat-status.offline {
+  background: #ef4444;
+}
+
+/* Loading spinner */
+.startupfactory-chat-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: #f9fafb;
+}
+
+.startupfactory-chat-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: startupfactory-spin 1s linear infinite;
+}
+
+@keyframes startupfactory-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

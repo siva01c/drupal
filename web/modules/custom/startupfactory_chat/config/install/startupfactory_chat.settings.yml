@@ -1,0 +1,7 @@
+ragchat_base_url: 'http://ragchat.local:8080'
+ragchat_api_token: ''
+jwt_secret: ''
+default_theme: 'light'
+default_greeting: 'Hi! I can help you configure your project. What would you like to do?'
+default_placeholder: 'Ask me anything...'
+default_height: '400px'

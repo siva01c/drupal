@@ -1,0 +1,69 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  VPS_HOST: ${{ secrets.VPS_HOST }}
+  VPS_USER: ${{ secrets.VPS_USER }}
+  VPS_PATH: ${{ secrets.VPS_PATH }}
+  PROJECT_NAME: {{project_slug}}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+    - name: Add VPS to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Deploy to VPS
+      run: |
+        # Sync files to VPS
+        rsync -avz --delete \
+          --exclude '.git' \
+          --exclude '.env' \
+          --exclude 'vendor' \
+          --exclude 'web/sites/default/files' \
+          ./ ${{ env.VPS_USER }}@${{ env.VPS_HOST }}:${{ env.VPS_PATH }}/
+
+    - name: Run deployment commands
+      run: |
+        ssh ${{ env.VPS_USER }}@${{ env.VPS_HOST }} << 'EOF'
+          cd ${{ env.VPS_PATH }}
+          
+          # Pull latest changes
+          git pull origin main
+          
+          # Update dependencies
+          docker compose exec drupal composer install --no-dev --optimize-autoloader
+          
+          # Import configuration
+          docker compose exec drush config:import -y
+          
+          # Run database updates
+          docker compose exec drush updb -y
+          
+          # Clear cache
+          docker compose exec drush cr
+          
+          # Restart services
+          docker compose up -d
+        EOF
+
+    - name: Verify deployment
+      run: |
+        sleep 30
+        curl -f http://${{ env.VPS_HOST }} || exit 1

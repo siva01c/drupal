@@ -1,0 +1,6 @@
+startupfactory_chat.admin_config:
+  title: 'Chat Integration'
+  route_name: startupfactory_chat.admin_config
+  description: 'Configure chat integration with ragchat.'
+  parent: system.admin_config_system
+  weight: 10

@@ -1,0 +1,9 @@
+name: 'Startup Factory Chat'
+type: module
+description: 'AI chat integration with ragchat for project configuration and customer support.'
+core_version_requirement: ^11
+package: 'Startup Factory'
+dependencies:
+  - drupal:startupfactory_project
+  - drupal:key
+  - drupal:encrypt

@@ -1,0 +1,25 @@
+startupfactory_chat.settings:
+  type: config_object
+  label: 'Startup Factory Chat settings'
+  mapping:
+    ragchat_base_url:
+      type: string
+      label: 'RagChat Base URL'
+    ragchat_api_token:
+      type: string
+      label: 'RagChat API Token'
+    jwt_secret:
+      type: string
+      label: 'JWT Secret Key'
+    default_theme:
+      type: string
+      label: 'Default Widget Theme'
+    default_greeting:
+      type: string
+      label: 'Default Greeting'
+    default_placeholder:
+      type: string
+      label: 'Default Placeholder'
+    default_height:
+      type: string
+      label: 'Default Widget Height'

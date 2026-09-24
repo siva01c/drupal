@@ -1,0 +1,39 @@
+administer project entities:
+  title: 'Administer Project entities'
+  description: 'Full access to create, edit, and delete Project entities.'
+
+view own project entities:
+  title: 'View own projects'
+  description: 'View projects owned by the current user.'
+
+view any project entities:
+  title: 'View any project'
+  description: 'View any project entity.'
+
+create project entities:
+  title: 'Create Project entities'
+  description: 'Create new Project entities.'
+
+edit own project entities:
+  title: 'Edit own projects'
+  description: 'Edit projects owned by the current user.'
+
+edit any project entities:
+  title: 'Edit any project entity'
+  description: 'Edit any Project entity.'
+
+delete own project entities:
+  title: 'Delete own projects'
+  description: 'Delete projects owned by the current user.'
+
+delete any project entities:
+  title: 'Delete any project entity'
+  description: 'Delete any Project entity.'
+
+export project entities:
+  title: 'Export projects to Git'
+  description: 'Export project configuration and files to standalone Git repositories.'
+
+deploy project entities:
+  title: 'Deploy projects to VPS'
+  description: 'Deploy projects to VPS via ops-proxy with automatic SSL.'

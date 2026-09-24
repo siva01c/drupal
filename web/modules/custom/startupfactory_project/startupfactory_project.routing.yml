@@ -1,0 +1,119 @@
+entity.project.canonical:
+  path: '/project/{project}'
+  defaults:
+    _entity_view: 'project'
+    _title_callback: '\Drupal\Core\Entity\Controller\EntityController::title'
+  requirements:
+    _entity_access: 'project.view'
+  options:
+    parameters:
+      project:
+        type: entity:project
+
+entity.project.add_form:
+  path: '/project/add'
+  defaults:
+    _entity_form: 'project.add'
+    _title: 'Add Project'
+  requirements:
+    _entity_create_access: 'project'
+
+entity.project.edit_form:
+  path: '/project/{project}/edit'
+  defaults:
+    _entity_form: 'project.edit'
+    _title: 'Edit Project'
+  requirements:
+    _entity_access: 'project.update'
+
+entity.project.delete_form:
+  path: '/project/{project}/delete'
+  defaults:
+    _entity_form: 'project.delete'
+    _title: 'Delete Project'
+  requirements:
+    _entity_access: 'project.delete'
+
+entity.project.collection:
+  path: '/admin/content/projects'
+  defaults:
+    _entity_list: 'project'
+    _title: 'Projects'
+  requirements:
+    _permission: 'administer project entities'
+
+startupfactory_project.dashboard:
+  path: '/dashboard'
+  defaults:
+    _controller: '\Drupal\startupfactory_project\Controller\DashboardController::dashboard'
+    _title: 'My Projects Dashboard'
+  requirements:
+    _role: 'authenticated'
+
+startupfactory_project.catalog:
+  path: '/projects'
+  defaults:
+    _controller: '\Drupal\startupfactory_project\Controller\DashboardController::catalog'
+    _title: 'Project Catalog'
+  requirements:
+    _permission: 'access content'
+
+startupfactory_project.export_form:
+  path: '/project/{project}/export'
+  defaults:
+    _controller: '\Drupal\startupfactory_project\Controller\ExportController::exportForm'
+    _title: 'Export Project'
+  requirements:
+    _permission: 'export project entities'
+  options:
+    parameters:
+      project:
+        type: entity:project
+
+startupfactory_project.export_execute:
+  path: '/project/{project}/export/execute'
+  defaults:
+    _controller: '\Drupal\startupfactory_project\Controller\ExportController::exportExecute'
+    _title: 'Execute Export'
+  requirements:
+    _permission: 'export project entities'
+  options:
+    parameters:
+      project:
+        type: entity:project
+
+startupfactory_project.export_download:
+  path: '/project/{project}/export/download'
+  defaults:
+    _controller: '\Drupal\startupfactory_project\Controller\ExportController::downloadExport'
+    _title: 'Download Export'
+  requirements:
+    _permission: 'export project entities'
+  options:
+    parameters:
+      project:
+        type: entity:project
+
+startupfactory_project.deploy_form:
+  path: '/project/{project}/deploy'
+  defaults:
+    _controller: '\Drupal\startupfactory_project\Controller\DeployController::deployForm'
+    _title: 'Deploy Project'
+  requirements:
+    _permission: 'deploy project entities'
+  options:
+    parameters:
+      project:
+        type: entity:project
+
+startupfactory_project.deploy_execute:
+  path: '/project/{project}/deploy/execute'
+  defaults:
+    _controller: '\Drupal\startupfactory_project\Controller\DeployController::deployExecute'
+    _title: 'Execute Deployment'
+  requirements:
+    _permission: 'deploy project entities'
+  options:
+    parameters:
+      project:
+        type: entity:project

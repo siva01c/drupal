@@ -1,0 +1,77 @@
+.project-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.project-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.project-card__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0073e6;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.project-card__title:hover {
+  text-decoration: underline;
+}
+
+.project-card__meta {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.project-card__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.project-dashboard__create {
+  margin-top: 2rem;
+  display: inline-block;
+}
+
+.project-catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.project-catalog__item {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.project-catalog__item h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.project-catalog__meta {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.dashboard-empty {
+  color: #666;
+  font-size: 1.1rem;
+}

@@ -1,0 +1,8 @@
+services:
+  startupfactory_chat.integration:
+    class: Drupal\startupfactory_chat\Service\ChatIntegrationService
+    arguments: ['@http_client', '@config.factory', '@key.repository', '@logger.factory', '@entity_type.manager']
+
+  startupfactory_chat.jwt_service:
+    class: Drupal\startupfactory_chat\Service\JwtService
+    arguments: ['@config.factory', '@current_user', '@request_stack', '@logger.factory']
