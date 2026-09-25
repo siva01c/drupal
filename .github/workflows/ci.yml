@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  composer:
+    name: Composer validate & install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: gd, pdo_mysql
+          tools: composer:v2
+          coverage: none
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+      - run: composer validate --strict
+      - run: composer install --no-interaction --no-progress
+
+  audit:
+    name: Composer security audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+          coverage: none
+      - run: composer audit --locked
+
+  docker-lint:
+    name: Lint Docker files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate docker-compose.yml
+        run: |
+          cp .env.default .env
+          docker compose config --quiet
+      - uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: docker/php/Dockerfile
+          failure-threshold: error
+      - uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: docker/nginx/Dockerfile
+          failure-threshold: error
+
+  smoke:
+    name: Smoke test (docker compose + drush site:install)
+    runs-on: ubuntu-latest
+    needs: [composer, docker-lint]
+    env:
+      COMPOSER_GITHUB_TOKEN: ''
+    steps:
+      - uses: actions/checkout@v7
+      - name: Start the stack
+        run: |
+          cp .env.default .env
+          docker compose up -d --build
+      # The project dir is bind-mounted and owned by the runner user, so
+      # composer and drush run as that uid instead of the image's www-data.
+      - name: Composer install
+        run: docker compose exec -T -u "$(id -u):$(id -g)" drupal composer install --no-interaction --no-progress
+      - name: Wait for MySQL
+        run: |
+          for _ in $(seq 1 60); do
+            docker compose exec -T mysql mysqladmin ping -h 127.0.0.1 -udrupal -ppassword --silent && exit 0
+            sleep 2
+          done
+          echo "MySQL did not become ready" >&2
+          exit 1
+      - name: Install Drupal
+        run: |
+          docker compose exec -T -u "$(id -u):$(id -g)" drupal \
+            drush site:install minimal --yes --site-name=CI \
+            --db-url=mysql://drupal:password@mysql:3306/drupal
+      - name: Front page returns HTTP 200
+        run: |
+          port=$(grep '^DAO_PORT_NGINX=' .env | cut -d= -f2)
+          code=$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:${port}/")
+          echo "HTTP ${code}"
+          test "${code}" = 200
+      - name: Container logs
+        if: failure()
+        run: docker compose logs --no-color
+      - name: Stop the stack
+        if: always()
+        run: docker compose down -v
