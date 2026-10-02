@@ -1,5 +1,5 @@
 # Use multi-stage build for better layer caching and smaller final image
-FROM php:8.4-fpm-bookworm AS base
+FROM php:8.5-fpm-bookworm AS base
 
 # Build arguments
 ARG TARGET_ENV=dev
