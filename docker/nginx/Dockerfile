@@ -1,4 +1,4 @@
-FROM nginx:1.30.4
+FROM nginx:1.31.0
 
 WORKDIR /var/www/html
 
