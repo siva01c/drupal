@@ -14,6 +14,10 @@ docker compose exec drupal composer install
 
 The first `docker compose up -d` builds the PHP and nginx images, which takes several minutes.
 
+The PHP container runs as `DAO_DRUPAL` from `.env` (`uid:gid`, default `1000:1000`), so that
+composer and Drupal can write into the project directory. If `id -u` prints something else on
+your machine, set `DAO_DRUPAL` to your `uid:gid` in `.env` before `docker compose up -d`.
+
 Open url in your browser: http://localhost:1577 - port is defined in .env file as DAO_PORT_NGINX
 
 ## Install Drupal
@@ -42,12 +46,12 @@ docker compose exec drupal drush site:install standard \
   --site-name="Drupal demo" --account-name=admin --account-pass=change-me -y
 ```
 
-This replaces an existing installation, database included.
+This replaces an existing installation, database included. Use your own `--account-pass`;
+`change-me` is only a placeholder.
 
 ## Good to know
 
 - `docker compose exec drupal bash` opens a shell in the PHP container; `drush` and `composer`
   are on the path.
-- The PHP container runs as `DAO_DRUPAL` from `.env` (`uid:gid`, default `1000:1000`), so that
-  composer and Drupal can write into the project directory. If `id -u` prints something else on
-  your machine, set `DAO_DRUPAL` to `$(id -u):$(id -g)` before the first start.
+- The database values come from `.env`; if you change them there, use the new ones in the
+  installer and in `--db-url`.

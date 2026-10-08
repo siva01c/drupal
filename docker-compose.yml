@@ -11,7 +11,7 @@ services:
         - TARGET_ENV=${TARGET_ENV}
     # Run as the host user (DAO_DRUPAL in .env, uid:gid), so composer and Drupal can write
     # into the bind-mounted project directory.
-    user: "${DAO_DRUPAL}"
+    user: "${DAO_DRUPAL:-1000:1000}"
     env_file:
       - .env
     volumes: 
