@@ -2,11 +2,16 @@ services:
 
   drupal:
     image: drupal-php
+    # Built locally, never pulled: without this the first `up` prints "pull access denied".
+    pull_policy: build
     build:
       context: .
       dockerfile: docker/php/Dockerfile
       args:
         - TARGET_ENV=${TARGET_ENV}
+    # Run as the host user (DAO_DRUPAL in .env, uid:gid), so composer and Drupal can write
+    # into the bind-mounted project directory.
+    user: "${DAO_DRUPAL:-1000:1000}"
     env_file:
       - .env
     volumes: 
@@ -15,8 +20,11 @@ services:
 
   nginx:
     image: drupal-nginx
+    pull_policy: build
     build:
       context: ./docker/nginx
+    # nginx refuses to start until the "drupal" upstream resolves.
+    depends_on: [ drupal ]
     ports: [ "${DAO_PORT_NGINX}:8080" ]
     volumes: [ "${DAO_PROJECT_DIR}:/var/www/html/:delegated" ]
 
