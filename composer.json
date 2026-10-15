@@ -52,8 +52,8 @@
         "drupal/field_group": "^3.6",
         "drupal/webform": "^6.2",
 
-        "drupal/gin": "^4.0",
-        "drupal/gin_toolbar": "^2.0",
+        "drupal/gin": "^5.0.16",
+        "drupal/gin_toolbar": "^3.0",
 
         "drupal/key": "^1.19",
         "drupal/encrypt": "^3.1",
